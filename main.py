@@ -1,6 +1,6 @@
 import sqlite3 as sq3
 from generator import generate_pass
-
+from colored import fg, bg, attr
 connection = sq3.connect('passwords.db')
 cursor = connection.cursor()
 
@@ -11,14 +11,14 @@ def commit_and_close():
     connection.close()
 
 def interface():
-    print("Welcome To Pass-lock.")
+    print("%s%sWelcome To Pass-lock.%s" %(fg('orchid'), attr('bold'), attr('reset')))
     #print("Thanks for using Pass-lock.")
-    print("[0]. Get your Password")
-    print("[1]. Add a New Password.")
-    print("[2]. Update a Existing Password.")
-    print("[3]. See all Passwords")
+    print("%s[0].%s %s Get your Password %s" %(fg(1), attr('bold'), fg(86), attr('bold')))
+    print("%s[1].%s %s Add a New Password. %s" %(fg(1), attr('bold'), fg(86), attr('bold')))
+    print("%s[2].%s %s Update a Existing Password. %s" %(fg(1), attr('bold'), fg(86), attr('bold')))
+    print("%s[3].%s %s See all Passwords. %s" %(fg(1), attr('bold'), fg(86), attr('bold')))
     print("")
-    pass_choice = int(input("enter Choice."))
+    pass_choice = int(input("%s %sEnter Your Choice. %s" %(bg('indian_red_1a'), fg('white'), attr('reset'))))
     if pass_choice == 0:
         get_pass()
     if pass_choice == 1:
@@ -26,7 +26,7 @@ def interface():
     if pass_choice == 2:
         update_pass()
     if pass_choice == 3:
-        pass
+        see_all()
     if pass_choice not in [0, 1, 2, 3]:
         print("Wrong Choice.")
         interface()
