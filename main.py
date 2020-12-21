@@ -1,10 +1,9 @@
 import sqlite3 as sq3
 from generator import generate_pass
 from colored import fg, bg, attr
+
 connection = sq3.connect('passwords.db')
 cursor = connection.cursor()
-
-cursor.execute("INSERT INTO passwords VALUES ('gmail', 'www.gmail.com', 1234 )")
 
 def commit_and_close():
     connection.commit()
@@ -32,8 +31,8 @@ def interface():
         interface()
 
 def get_pass():
-    #website_name = input(" Enter Website's Name : ")
-    cursor.execute("SELECT * FROM passwords WHERE web_name = 'gmail'")
+    website_name = input(" Enter Website's Name : ")
+    cursor.execute("SELECT * FROM passwords WHERE web_name = '%s'" %website_name)
     data = cursor.fetchall()
     if data is not None:
         print(data)
@@ -42,25 +41,33 @@ def get_pass():
     commit_and_close()
 
 def add_pass():
+    #connection_up()
     website_name = input("Enter Website's Name : ")
     website_url = input("Enter Website's URL : ")
     website_password = input("If you want me to generate a password for you"
                              "then press [Y] for YES and [N] for NO.")
-    if website_password == 'N' or website_password == 'n':
+    if website_password == 'Y' or website_password == 'y':
         website_password = generate_pass()
-        print(website_password)
-    sql = 'Insert into passwords values (%s, %s, %s)' %(website_name, website_url, website_password)
+    if website_password == 'N' or website_password == 'n':
+        website_password = input("Enter Password for %s : " %website_name)
+    sql = "Insert into passwords values ('%s', '%s', '%s')" %(website_name, website_url, website_password)
     cursor.execute(sql)
+    print("password Added.")
+    ch = input("want to see all the passwords? : ")
+    if ch == 'y':
+        see_all()
     commit_and_close()
 
 def update_pass():
+    #connection_up()
     website_name = input("Enter Website/App name : ")
     new_password = input("Enter New Password : ")
-    cursor.execute("update passwords set password = %s where web_name = %s" %(new_password, website_name))
+    cursor.execute("update passwords set password = '%s' where web_name = '%s'" %(new_password, website_name))
     commit_and_close()
 
 def see_all():
-    cursor.execute('select * from password')
+    #connection_up()
+    cursor.execute('select * from passwords')
     data = cursor.fetchall()
     print(data)
 
