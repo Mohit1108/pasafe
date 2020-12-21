@@ -5,7 +5,7 @@ from colored import fg, bg, attr
 connection = sq3.connect('passwords.db')
 cursor = connection.cursor()
 
-def commit_and_close():
+def commit_and_close(): # to close the connection.
     connection.commit()
     connection.close()
 
