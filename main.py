@@ -31,7 +31,7 @@ def interface():
 
 def get_pass():
     website_name = input(" Enter Website's Name : ")
-    cursor.execute("SELECT * FROM passwords WHERE web_name = %s" %website_name)
+    cursor.execute("SELECT * FROM passwords WHERE web_name = '%s'" %website_name)
     data = cursor.fetchall()
     if data is not None:
         print(data)
@@ -46,8 +46,10 @@ def add_pass():
                              "then press [Y] for YES and [N] for NO.")
     if website_password == 'Y' or website_password == 'y':
         website_password = generate_pass()
+    if website_password == 'N' or website_password == 'n':
+        website_password = input("Enter Password for %s : " %website_name)
 
-    sql = "Insert into passwords values (%s, %s, %s)" %(website_name, website_url, website_password)
+    sql = "Insert into passwords values ('%s', '%s', '%s')" %(website_name, website_url, website_password)
     cursor.execute(sql)
     print("password Added.")
     ch = input("want to see all the passwords? : ")
@@ -58,7 +60,7 @@ def add_pass():
 def update_pass():
     website_name = input("Enter Website/App name : ")
     new_password = input("Enter New Password : ")
-    cursor.execute("update passwords set password = %s where web_name = %s" %(new_password, website_name))
+    cursor.execute("update passwords set password = '%s' where web_name = '%s'" %(new_password, website_name))
     commit_and_close()
 
 def see_all():
